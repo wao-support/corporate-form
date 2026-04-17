@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お弁当デリ 法人プログラム申込書</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #1a1a1a;
+      background: #f4f4f4;
+      padding: 40px 16px;
+    }
+
+    .form-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 56px 64px;
+    }
+
+    /* ヘッダー */
+    .form-header {
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .form-header p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* セクション */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      border-left: 3px solid #1a1a1a;
+      padding-left: 12px;
+      margin-bottom: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .section-note {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+    }
+
+    /* インフォブロック（説明文） */
+    .info-block {
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+      padding: 20px 24px;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .info-block p + p {
+      margin-top: 10px;
+    }
+
+    /* テーブル（基本情報・同意欄） */
+    .input-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .input-table tr {
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .input-table tr:first-child {
+      border-top: 1px solid #e8e8e8;
+    }
+
+    .input-table th {
+      width: 180px;
+      padding: 14px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: left;
+      background: #f9f9f9;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .input-table td {
+      padding: 10px 16px;
+      vertical-align: middle;
+    }
+
+    /* フォーム部品 */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+      background: #fff;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #1a1a1a;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* フィールドグループ */
+    .field-group {
+      margin-bottom: 24px;
+    }
+
+    .field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .field-sub {
+      font-size: 13px;
+      color: #888;
+      font-weight: 400;
+      margin-left: 6px;
+    }
+
+    /* 金額入力 */
+    .amount-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .amount-row span {
+      font-size: 14px;
+      white-space: nowrap;
+      color: #444;
+    }
+
+    .amount-row input {
+      width: 140px;
+    }
+
+    /* チェックボックス・ラジオ */
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px 16px;
+    }
+
+    .check-item,
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .check-item input,
+    .radio-item input {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: #1a1a1a;
+    }
+
+    .check-other {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .check-other input[type="text"] {
+      width: 240px;
+    }
+
+    /* プランテーブル */
+    .plan-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .plan-table th {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 12px 16px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .plan-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .plan-table tr:nth-child(even) td {
+      background: #f9f9f9;
+    }
+
+    .plan-table .rate {
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    /* 注記 */
+    .note {
+      font-size: 13px;
+      color: #666;
+      margin-top: 12px;
+      padding-left: 1em;
+      text-indent: -1em;
+    }
+
+    .note::before {
+      content: "※ ";
+    }
+
+    /* ステップ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-line {
+      width: 2px;
+      flex: 1;
+      min-height: 32px;
+      background: #ddd;
+      margin: 4px 0;
+    }
+
+    .step-body {
+      padding: 6px 0 32px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .step:last-child .step-line {
+      display: none;
+    }
+
+    .step:last-child .step-body {
+      padding-bottom: 0;
+    }
+
+    /* サポートブロック */
+    .support-item {
+      border: 1px solid #e8e8e8;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+
+    .support-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .support-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .support-desc {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.9;
+    }
+
+    /* 運用リスト */
+    .ops-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .ops-list li {
+      font-size: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding-left: 1.2em;
+      position: relative;
+    }
+
+    .ops-list li::before {
+      content: "―";
+      position: absolute;
+      left: 0;
+      color: #999;
+    }
+
+    /* 割引選択 */
+    .discount-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .discount-option {
+      border: 1px solid #ddd;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .discount-option:has(input:checked) {
+      border-color: #1a1a1a;
+      background: #fafafa;
+    }
+
+    .discount-option label {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+    }
+
+    .discount-option input {
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      flex-shrink: 0;
+      accent-color: #1a1a1a;
+    }
+
+    .discount-option-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .discount-option-desc {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* 区切り線 */
+    .divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 40px 0;
+    }
+
+    /* 同意文 */
+    .consent-text {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+    }
+
+    /* 送信ボタン */
+    .submit-area {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      padding: 16px 64px;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+      background: #333;
+    }
+
+    /* フッター */
+    .form-footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e8e8e8;
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .form-wrapper { padding: 32px 24px; }
+      .input-table th { width: 120px; font-size: 13px; }
+      .check-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-wrapper">
+
+  <div class="form-header">
+    <h1>お弁当デリ 法人プログラム申込書</h1>
+    <p>担当者と内容をご確認いただきながらご記入ください</p>
+  </div>
+
+  <form>
+
+    <!-- ① 基本情報 -->
+    <div class="section">
+      <div class="section-title">① 基本情報</div>
+      <table class="input-table">
+        <tr>
+          <th>会社名</th>
+          <td><input type="text" name="company" required placeholder="株式会社〇〇"></td>
+        </tr>
+        <tr>
+          <th>部署名</th>
+          <td><input type="text" name="department" placeholder="総務部"></td>
+        </tr>
+        <tr>
+          <th>ご担当者名</th>
+          <td><input type="text" name="name" required placeholder="山田 太郎"></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><input type="email" name="email" required placeholder="example@company.co.jp"></td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td><input type="tel" name="tel" placeholder="03-0000-0000"></td>
+        </tr>
+      </table>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ② 貴社のご利用状況 -->
+    <div class="section">
+      <div class="section-title">② 貴社のご利用状況</div>
+      <div class="section-note">初回プランの確定および導入設計に使用します。わかる範囲でご記入ください。</div>
+
+      <div class="field-group">
+        <label class="field-label">月間利用想定額</label>
+        <div class="amount-row">
+          <span>約</span>
+          <input type="text" name="monthly_amount" style="width:120px" placeholder="30">
+          <span>万円 / 月</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">主な利用シーン <span class="field-sub">複数選択可</span></label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="scene" value="meeting">社内会議・役員会議</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="training">研修・勉強会</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="event">社内イベント・懇親会</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="guest">来客・接待対応</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="daily">社員の日常昼食</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="exhibition">展示会・外部イベント</label>
+          <label class="check-item"><input type="checkbox" name="scene" value="site">現場・工場・撮影スタッフ向け</label>
+        </div>
+        <div class="check-other">
+          <label class="check-item"><input type="checkbox" name="scene" value="other_scene">その他：</label>
+          <input type="text" name="scene_other" placeholder="内容をご記入ください">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">利用部門 <span class="field-sub">該当するものをすべて選択してください</span></label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="dept" value="hq">本社</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="branch">支店・営業所</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="sales">営業部</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="admin">総務・管理部</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="hr">人事部</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="pr">広報・マーケティング部</label>
+          <label class="check-item"><input type="checkbox" name="dept" value="factory">工場・現場部門</label>
+        </div>
+        <div class="check-other">
+          <label class="check-item"><input type="checkbox" name="dept" value="other_dept">その他：</label>
+          <input type="text" name="dept_other" placeholder="部署名をご記入ください">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">社内の発注者数 <span class="field-sub">現在または想定</span></label>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <label class="radio-item"><input type="radio" name="order_count" value="1">1名（一元管理）</label>
+          <label class="radio-item"><input type="radio" name="order_count" value="2-5">2〜5名</label>
+          <label class="radio-item"><input type="radio" name="order_count" value="6-10">6〜10名</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label class="radio-item"><input type="radio" name="order_count" value="11+">11名以上（約</label>
+            <input type="text" name="order_count_num" style="width:80px" placeholder="　">
+            <span style="font-size:14px;">名）</span>
+          </div>
+          <label class="radio-item"><input type="radio" name="order_count" value="unknown">把握できていない</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ③ プログラム概要 -->
+    <div class="section">
+      <div class="section-title">③ プログラム概要</div>
+      <div class="info-block">
+        <p>本プログラムは、すでにお弁当デリをご利用いただいている法人様を対象とした利用集約・最適化プログラムです。</p>
+        <p>社内のお弁当注文をお弁当デリに集約いただくことで、請求・管理業務の効率化と、ご利用金額に応じた割引の適用を受けていただけます。</p>
+        <p>申込後は、過去12ヶ月のご利用実績をもとに初回プランを確定し、申込翌月より割引を開始します。</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ④ プラン・割引条件 -->
+    <div class="section">
+      <div class="section-title">④ プラン・割引条件</div>
+      <p style="font-size:14px; margin-bottom:16px; color:#444;">集計期間：申込日を起算日とした12ヶ月（以降、12ヶ月ごとに自動更新）</p>
+      <table class="plan-table">
+        <thead>
+          <tr>
+            <th>プラン名</th>
+            <th>年間累計利用額</th>
+            <th>割引率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ビジネスシルバー</td>
+            <td>100万円以上</td>
+            <td class="rate">2%</td>
+          </tr>
+          <tr>
+            <td>ビジネスゴールド</td>
+            <td>500万円以上</td>
+            <td class="rate">3%</td>
+          </tr>
+          <tr>
+            <td>ビジネスプラチナ</td>
+            <td>1,000万円以上</td>
+            <td class="rate">5%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">申込時点での過去12ヶ月のご利用実績をもとに初回プランを確定します。割引の適用は申込翌月以降の注文が対象となります（申込前の注文への遡及適用はありません）。</p>
+      <p class="note">集計期間終了後、実績をもとにプランを更新します。利用金額の増減に応じて、翌期の適用プランが変わります。</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑤ 割引の受け取り方 -->
+    <div class="section">
+      <div class="section-title">⑤ 割引の受け取り方</div>
+      <p style="font-size:14px; color:#444; margin-bottom:20px;">割引の受け取り方は法人単位での設定となります。下記いずれかをお選びください。申込確定後、設定内容に応じた専用コードを発行します。注文時にコードを入力することで割引が適用されます。</p>
+      <div class="discount-options">
+        <div class="discount-option">
+          <label>
+            <input type="radio" name="discount_type" value="immediate" required>
+            <div>
+              <div class="discount-option-title">注文金額からの即時割引</div>
+              <div class="discount-option-desc">注文のたびに割引後の金額でご請求します</div>
+            </div>
+          </label>
+        </div>
+        <div class="discount-option">
+          <label>
+            <input type="radio" name="discount_type" value="points">
+            <div>
+              <div class="discount-option-title">お弁当デリポイントの倍率アップ</div>
+              <div class="discount-option-desc">通常よりも高い倍率でお弁当デリポイントが付与されます</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <p style="font-size:13px; color:#888; margin-top:12px;">設定の変更をご希望の場合は、担当者までご連絡ください</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑥ 3つの便利サポート -->
+    <div class="section">
+      <div class="section-title">⑥ 3つの便利サポート</div>
+      <p style="font-size:14px; color:#444; margin-bottom:16px;">本プログラム参加法人様には、以下のサポートを標準でご提供します。</p>
+      <div class="support-item">
+        <div class="support-title">サポート① 請求の一本化（月次請求・全店舗インボイス対応）</div>
+        <div class="support-desc">発注者・部署単位で個別に発生していた請求を、月次で法人単位に集約し、1通にまとめて発行します。適格請求書（インボイス）に対応した書類を発行しますので、精算処理・承認確認・支払業務にかかる事務負荷を軽減できます。</div>
+      </div>
+      <div class="support-item">
+        <div class="support-title">サポート② 法人専用コンシェルジュ（注文代行）</div>
+        <div class="support-desc">大量注文・複数日程・複数拠点にわたる手配など、貴社担当者による選定・発注が困難な場合、専任担当者がメニューの提案から手配の完了まで一括して対応します。</div>
+      </div>
+      <div class="support-item">
+        <div class="support-title">サポート③ 注文画面のカスタマイズ</div>
+        <div class="support-desc">注文時の入力項目を貴社の運用ルールに合わせて設定できます。「部署名」「用途・会議名」等の必須入力項目を設けることにより、利用実績の記録・費用按分・社内報告への活用が可能となります。</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑦ 運用について -->
+    <div class="section">
+      <div class="section-title">⑦ 運用について</div>
+      <p style="font-size:14px; color:#444; margin-bottom:16px;">本プログラムは、社内の注文をお弁当デリに集約いただくことで、より高い効果が見込まれます。</p>
+      <ul class="ops-list">
+        <li>社内に複数の発注者がいる場合は、注文先をお弁当デリに統一されることを強く推奨します</li>
+        <li>会議・研修・イベント等、弁当手配が発生するすべての場面において、本プログラム経由での発注を推奨します</li>
+        <li>集約利用の拡大に伴い、上位プランへの移行が見込まれ、割引率および提供サポートの範囲が拡充されます</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑧ 申込後の流れ -->
+    <div class="section">
+      <div class="section-title">⑧ 申込後の流れ</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">申込書の提出</div>
+            <div class="step-desc">本書にご記入の上、送信してください</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">プラン確定・コード発行（3営業日以内）</div>
+            <div class="step-desc">過去12ヶ月の実績をもとに初回プランを確定し、専用コードと利用開始のご案内をお送りします</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">3</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">社内周知</div>
+            <div class="step-desc">当社より社内案内用の文面・資料をご提供します。貴社ご担当者より、社内メール・チャット等でご周知ください。<br>※案内文・資料のカスタマイズが必要な場合は担当者にご相談ください</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">4</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">未会員社員の一括登録</div>
+            <div class="step-desc">当社担当者が、未会員の社員を一括で登録します。登録対象者のリスト（氏名・メールアドレス）を担当者までご共有ください</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">5</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">割引の開始</div>
+            <div class="step-desc">申込翌月より、注文時に専用コードを入力いただくことで、確定プランの割引が適用されます</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑨ 備考 -->
+    <div class="section">
+      <div class="section-title">⑨ 備考</div>
+      <textarea name="remarks" placeholder="ご要望・ご質問等があればご記入ください"></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ⑩ 同意欄 -->
+    <div class="section">
+      <div class="section-title">⑩ 同意欄</div>
+      <div class="consent-text">本申込書の記載内容およびプログラムの運用方針を確認の上、申込みます。</div>
+      <table class="input-table">
+        <tr>
+          <th>会社名</th>
+          <td><input type="text" name="consent_company" required placeholder="株式会社〇〇"></td>
+        </tr>
+        <tr>
+          <th>ご担当者名</th>
+          <td><input type="text" name="consent_name" required placeholder="山田 太郎"></td>
+        </tr>
+        <tr>
+          <th>日付</th>
+          <td><input type="date" name="consent_date" required></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" class="submit-btn" id="submitBtn">申込内容を送信する</button>
+      <p id="form-message" style="margin-top:16px; font-size:14px;"></p>
+    </div>
+
+  </form>
+
+  <script>
+    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL';
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('form-message');
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+      msg.textContent = '';
+      msg.style.color = '#444';
+
+      // チェックボックスの値を収集
+      const scenes = [...document.querySelectorAll('input[name="scene"]:checked')]
+        .map(el => el.parentElement.textContent.trim()).join('、');
+      const depts = [...document.querySelectorAll('input[name="dept"]:checked')]
+        .map(el => el.parentElement.textContent.trim()).join('、');
+
+      const data = {
+        company:         document.querySelector('[name="company"]').value,
+        department:      document.querySelector('[name="department"]').value,
+        name:            document.querySelector('[name="name"]').value,
+        email:           document.querySelector('[name="email"]').value,
+        tel:             document.querySelector('[name="tel"]').value,
+        monthly_amount:  document.querySelector('[name="monthly_amount"]').value,
+        scene:           scenes,
+        scene_other:     document.querySelector('[name="scene_other"]').value,
+        dept:            depts,
+        dept_other:      document.querySelector('[name="dept_other"]').value,
+        order_count:     document.querySelector('[name="order_count"]:checked')?.value || '',
+        order_count_num: document.querySelector('[name="order_count_num"]').value,
+        discount_type:   document.querySelector('[name="discount_type"]:checked')?.value || '',
+        remarks:         document.querySelector('[name="remarks"]').value,
+        consent_company: document.querySelector('[name="consent_company"]').value,
+        consent_name:    document.querySelector('[name="consent_name"]').value,
+        consent_date:    document.querySelector('[name="consent_date"]').value,
+      };
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        msg.textContent = '申込を受け付けました。担当者よりご連絡いたします。';
+        msg.style.color = '#2a7a2a';
+        document.querySelector('form').reset();
+        btn.textContent = '送信完了';
+      })
+      .catch(() => {
+        msg.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+        msg.style.color = '#c00';
+        btn.disabled = false;
+        btn.textContent = '申込内容を送信する';
+      });
+    });
+  </script>
+
+  <div class="form-footer">
+    <p>ご不明な点は担当者までお問い合わせください</p>
+    <p style="margin-top:4px;">お弁当デリ 法人窓口</p>
+  </div>
+
+</div>
+
+</body>
+</html>

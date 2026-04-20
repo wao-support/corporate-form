@@ -798,9 +798,6 @@
         order_count_num: document.querySelector('[name="order_count_num"]').value,
         discount_type:   document.querySelector('[name="discount_type"]:checked')?.value || '',
         remarks:         document.querySelector('[name="remarks"]').value,
-        consent_company: document.querySelector('[name="consent_company"]').value,
-        consent_name:    document.querySelector('[name="consent_name"]').value,
-        consent_date:    document.querySelector('[name="consent_date"]').value,
       };
 
       fetch(APPS_SCRIPT_URL, {

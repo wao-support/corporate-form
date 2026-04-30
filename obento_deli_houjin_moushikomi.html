@@ -564,7 +564,7 @@
     <!-- ④ プラン・割引条件 -->
     <div class="section">
       <div class="section-title">③ プラン・割引条件</div>
-      <p style="font-size:14px; margin-bottom:16px; color:#444;">集計期間：申込日を起算日とした12ヶ月（以降、12ヶ月ごとに自動更新）</p>
+      <p style="font-size:14px; margin-bottom:16px; color:#444;">集計期間：申込翌月の1日を起算日とした12ヶ月（以降、12ヶ月ごとに自動更新）</p>
       <table class="plan-table">
         <thead>
           <tr>
@@ -591,6 +591,7 @@
           </tr>
         </tbody>
       </table>
+      <p class="note">年間累計利用額は、集計期間内のご注文額（税込・割引前）の合計です。</p>
       <p class="note">申込時点での過去12ヶ月のご利用実績をもとに初回プランを確定します。割引の適用は申込翌月以降の注文が対象となります（申込前の注文への遡及適用はありません）。</p>
       <p class="note">集計期間終了後、実績をもとにプランを更新します。利用金額の増減に応じて、翌期の適用プランが変わります。</p>
     </div>
@@ -732,6 +733,10 @@
           <td><input type="text" name="department" placeholder="総務部"></td>
         </tr>
         <tr>
+          <th>役職</th>
+          <td><input type="text" name="position" placeholder="部長"></td>
+        </tr>
+        <tr>
           <th>ご担当者名</th>
           <td><input type="text" name="name" required placeholder="山田 太郎"></td>
         </tr>
@@ -787,6 +792,7 @@
       const data = {
         company:         document.querySelector('[name="company"]').value,
         department:      document.querySelector('[name="department"]').value,
+        position:        document.querySelector('[name="position"]').value,
         name:            document.querySelector('[name="name"]').value,
         email:           document.querySelector('[name="email"]').value,
         tel:             document.querySelector('[name="tel"]').value,

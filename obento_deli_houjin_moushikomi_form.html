@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お弁当デリ　法人VIPプログラム申込書</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      font-size: 10pt;
+      line-height: 1.75;
+      color: #1a1a1a;
+      background: #f4f4f4;
+      padding: 40px 16px;
+    }
+
+    .page {
+      max-width: 740px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 52px 60px;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { border: none; padding: 0; max-width: 100%; }
+      .hint { display: none !important; }
+    }
+
+    /* ヘッダー */
+    .doc-header {
+      text-align: center;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    .doc-title {
+      font-size: 18pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .doc-brand {
+      font-size: 10pt;
+      color: #666;
+      letter-spacing: 0.05em;
+    }
+
+    /* 申込日・管理番号 */
+    .doc-meta {
+      display: flex;
+      justify-content: flex-end;
+      gap: 32px;
+      font-size: 9.5pt;
+      margin-bottom: 24px;
+    }
+
+    /* セクション */
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 5px 12px;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* 情報テーブル */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+    }
+
+    .info-table th {
+      width: 130px;
+      padding: 7px 12px;
+      font-weight: 600;
+      text-align: left;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .info-table td {
+      padding: 7px 12px;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+    }
+
+    /* 編集フィールド */
+    [contenteditable] {
+      display: inline-block;
+      min-width: 40px;
+      min-height: 1.3em;
+      outline: none;
+      border-bottom: 1px solid #bbb;
+      padding: 0 3px;
+    }
+
+    [contenteditable]:focus {
+      background: #fffde7;
+      border-bottom-color: #1a1a1a;
+    }
+
+    .fill-block {
+      display: block;
+      width: 100%;
+      min-height: 1.3em;
+      outline: none;
+    }
+
+    .fill-block:focus {
+      background: #fffde7;
+    }
+
+    @media print {
+      [contenteditable] {
+        background: transparent !important;
+        border-bottom-color: #888;
+      }
+      .fill-block {
+        background: transparent !important;
+      }
+    }
+
+    /* プランボックス */
+    .plan-box {
+      border: 1.5px solid #1a1a1a;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+    }
+
+    .plan-name {
+      font-size: 12pt;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .plan-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 9.5pt;
+    }
+
+    .plan-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plan-detail-label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .plan-rate {
+      font-size: 13pt;
+      font-weight: 700;
+    }
+
+    /* 利用規約 */
+    .terms {
+      border: 1px solid #e0e0e0;
+      padding: 14px 18px;
+      font-size: 9pt;
+      line-height: 1.85;
+      color: #333;
+    }
+
+    .terms ol {
+      padding-left: 1.6em;
+    }
+
+    .terms li {
+      margin-bottom: 4px;
+    }
+
+    /* 同意文 */
+    .consent-text {
+      font-size: 9.5pt;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    /* 署名エリア */
+    .sign-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 4px;
+    }
+
+    .sign-box {
+      border: 1px solid #ccc;
+      padding: 14px 16px;
+    }
+
+    .sign-box-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+
+    .sign-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 9pt;
+    }
+
+    .sign-label {
+      white-space: nowrap;
+      color: #555;
+      width: 64px;
+      flex-shrink: 0;
+    }
+
+    .sign-field {
+      flex: 1;
+      border-bottom: 1px solid #aaa;
+      min-height: 1.3em;
+    }
+
+    .seal-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+
+    .seal-box {
+      width: 52px;
+      height: 52px;
+      border: 1px solid #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9pt;
+      color: #bbb;
+    }
+
+    /* 注記 */
+    .note {
+      font-size: 8.5pt;
+      color: #666;
+      margin-top: 6px;
+      padding-left: 1em;
+      text-indent: -1em;
+    }
+
+    .note::before {
+      content: "※ ";
+    }
+
+    /* ヒント（画面のみ表示） */
+    .hint {
+      font-size: 8.5pt;
+      color: #999;
+      margin-top: 6px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-title">法人VIPプログラム　申込書</div>
+    <div class="doc-brand">お弁当デリ</div>
+  </div>
+
+  <div class="doc-meta">
+    <span>申込日：<span contenteditable="true">　　　年　　月　　日</span></span>
+    <span>管理番号：<span contenteditable="true">　　　　　　　</span></span>
+  </div>
+
+  <!-- １．申込法人情報 -->
+  <div class="section">
+    <div class="section-title">１．申込法人情報</div>
+    <table class="info-table">
+      <tr>
+        <th>会社名</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>部署名</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>役職</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>担当者名</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>メールアドレス</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>電話番号</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ２．申込プラン -->
+  <div class="section">
+    <div class="section-title">２．申込プラン</div>
+    <div class="plan-box">
+      <div class="plan-name"><span contenteditable="true">ビジネス　　　　　</span></div>
+      <div class="plan-details">
+        <div class="plan-detail-item">
+          <span class="plan-detail-label">割引率</span>
+          <span class="plan-rate"><span contenteditable="true">　</span>%</span>
+        </div>
+        <div class="plan-detail-item">
+          <span class="plan-detail-label">集計期間</span>
+          <span>
+            <span contenteditable="true">　　　年　　月　　日</span>
+            　〜
+            <span contenteditable="true">　　　年　　月　　日</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <p class="note">年間累計利用額は、集計期間内のご注文額（税込・割引前）の合計です。</p>
+    <p class="note">集計期間は申込翌月の1日を起算日とした12ヶ月です。以降12ヶ月ごとに自動更新されます。</p>
+    <p class="note">プランは集計期間終了後、ご利用実績をもとに更新します。</p>
+  </div>
+
+  <!-- ３．割引の受け取り方 -->
+  <div class="section">
+    <div class="section-title">３．割引の受け取り方</div>
+    <table class="info-table">
+      <tr>
+        <th>選択方式</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+      <tr>
+        <th>専用コード</th>
+        <td><div contenteditable="true" class="fill-block"></div></td>
+      </tr>
+    </table>
+    <p class="note">即時割引を選択した場合、通常付与されるお弁当デリポイント（1倍）は付与されません。</p>
+    <p class="note">設定の変更をご希望の場合は、担当者までご連絡ください。</p>
+  </div>
+
+  <!-- ４．利用規約 -->
+  <div class="section">
+    <div class="section-title">４．利用規約</div>
+    <div class="terms">
+      <ol>
+        <li>本プログラムへの参加は、すでにお弁当デリをご利用いただいている法人様を対象とします。</li>
+        <li>集計期間は申込翌月の1日を起算日とした12ヶ月とし、以降12ヶ月ごとに自動更新されます。</li>
+        <li>割引は申込翌月以降のご注文に適用されます。申込前のご注文への遡及適用はありません。</li>
+        <li>プランの割引率は、各集計期間終了後にご利用実績をもとに翌期の適用プランを更新します。</li>
+        <li>割引の受け取り方式の変更をご希望の場合は、担当者までご連絡ください。</li>
+        <li>本プログラムは、申込法人からの書面による申し出により退会できます。退会後は割引の適用が終了します。</li>
+        <li>お弁当デリの利用規約および個人情報保護方針に同意のうえ、本プログラムをご利用ください。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ５．同意・署名 -->
+  <div class="section">
+    <div class="section-title">５．同意・署名</div>
+    <p class="consent-text">上記の内容および利用規約に同意のうえ、お弁当デリ 法人VIPプログラムに申し込みます。</p>
+    <div class="sign-area">
+      <div class="sign-box">
+        <div class="sign-box-title">申込法人</div>
+        <div class="sign-row">
+          <span class="sign-label">会社名</span>
+          <span class="sign-field"></span>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">代表者名</span>
+          <span class="sign-field"></span>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">日付</span>
+          <span class="sign-field"></span>
+        </div>
+        <div class="seal-row"><div class="seal-box">印</div></div>
+      </div>
+      <div class="sign-box">
+        <div class="sign-box-title">お弁当デリ（受付）</div>
+        <div class="sign-row">
+          <span class="sign-label">担当者名</span>
+          <span class="sign-field"></span>
+        </div>
+        <div class="sign-row">
+          <span class="sign-label">日付</span>
+          <span class="sign-field"></span>
+        </div>
+        <div class="seal-row"><div class="seal-box">印</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="hint">※ 各項目をクリックして入力後、ブラウザの印刷機能（PDF保存）をご使用ください</p>
+
+</div>
+
+</body>
+</html>

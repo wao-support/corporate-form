@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>BP事業部 営業戦略</title>
+  <!-- 施策スライド用追加スタイル -->
+  <style id="extra-style"></style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #10101E;
+    --card:    #1E1E35;
+    --card2:   #28284A;
+    --accent:  #E83A3A;
+    --orange:  #F5A623;
+    --green:   #2ECC71;
+    --white:   #FFFFFF;
+    --light:   #BBBBCC;
+    --muted:   #777799;
+    --divider: #444466;
+  }
+
+  html, body {
+    height: 100%;
+    background: #0A0A14;
+    font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  /* ── Slideshow wrapper ───────────────────── */
+  #deck {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Progress bar ───────────────────────── */
+  #progress-bar {
+    height: 4px;
+    background: var(--divider);
+    flex-shrink: 0;
+  }
+  #progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width .4s ease;
+  }
+
+  /* ── Slide area ─────────────────────────── */
+  #slides-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    padding: 0 56px 0 72px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  /* 左縦ライン */
+  .slide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--accent);
+  }
+
+  /* ── Header ─────────────────────────────── */
+  .slide-header {
+    padding-top: 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .slide-num {
+    background: var(--accent);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+  .slide-title {
+    font-size: clamp(18px, 2.4vw, 26px);
+    font-weight: 900;
+    line-height: 1.25;
+    flex: 1;
+  }
+  .slide-sub {
+    font-size: clamp(11px, 1.1vw, 13px);
+    color: var(--orange);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .title-underline {
+    height: 3px;
+    background: var(--accent);
+    margin: 10px 0 12px 0;
+    flex-shrink: 0;
+  }
+
+  /* ── Body ───────────────────────────────── */
+  .slide-body {
+    flex: 1;
+    display: flex;
+    gap: 28px;
+    overflow: hidden;
+  }
+  .col { display: flex; flex-direction: column; }
+  .col-l { flex: 1.1; }
+  .col-r { flex: 1.3; border-left: 2px solid var(--divider); padding-left: 24px; }
+  .col-3 { flex: 1; }
+
+  /* ── Cards ──────────────────────────────── */
+  .card {
+    background: var(--card2);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .card.accent-border { border-color: var(--accent); background: #2A0808; }
+  .card.orange-border { border-color: var(--orange); background: #2A1E08; }
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  /* ── Number cards ───────────────────────── */
+  .num-cards {
+    display: flex;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .num-card {
+    flex: 1;
+    background: var(--card2);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .num-card.danger { border-color: var(--accent); background: #3A1010; }
+  .num-card-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+  .num-card-val { font-size: clamp(16px, 1.8vw, 22px); font-weight: 900; }
+  .num-card-val.red { color: var(--accent); }
+  .num-card-sub { font-size: 9px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+  /* ── Text utils ─────────────────────────── */
+  .t-light  { color: var(--light); }
+  .t-muted  { color: var(--muted); }
+  .t-accent { color: var(--accent); }
+  .t-orange { color: var(--orange); }
+  .t-green  { color: var(--green); }
+  .fw-bold  { font-weight: 700; }
+  .fs-sm    { font-size: clamp(10px, 1.0vw, 12px); }
+  .fs-md    { font-size: clamp(11px, 1.1vw, 13px); }
+  .fs-lg    { font-size: clamp(13px, 1.35vw, 15px); }
+
+  /* ── Question blocks ─────────────────────── */
+  .q-block {
+    background: var(--card2);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 7px 12px;
+    margin: 5px 0;
+    font-size: clamp(10px, 1.0vw, 11.5px);
+    color: var(--light);
+  }
+
+  /* ── Footer banner ───────────────────────── */
+  .footer-banner {
+    background: var(--accent);
+    margin: 0 -56px 0 -72px;
+    padding: 12px 72px 12px 56px;
+    font-size: clamp(10px, 1.0vw, 11.5px);
+    font-weight: 700;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+  .footer-insight {
+    background: #1A0A0A;
+    border-top: 3px solid var(--accent);
+    margin: 0 -56px 0 -72px;
+    padding: 10px 72px 10px 56px;
+    flex-shrink: 0;
+  }
+
+  /* ── Before/After table ─────────────────── */
+  .ba-table { border-collapse: collapse; width: 100%; }
+  .ba-table th {
+    background: var(--accent);
+    color: var(--white);
+    font-size: clamp(10px, 1.0vw, 11px);
+    padding: 6px 10px;
+    text-align: left;
+  }
+  .ba-table td {
+    font-size: clamp(10px, 1.0vw, 11.5px);
+    padding: 7px 10px;
+    color: var(--light);
+    border-bottom: 1px solid var(--divider);
+  }
+  .ba-table tr:nth-child(odd) td  { background: var(--card); }
+  .ba-table tr:nth-child(even) td { background: var(--card2); }
+  .arrow-col { color: var(--accent); font-size: 16px; font-weight: 900; width: 30px; text-align: center; }
+
+  /* ── Segment cards ───────────────────────── */
+  .seg-card {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .seg-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .seg-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .seg-goal {
+    font-size: clamp(10px, 1.05vw, 12px);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .seg-item {
+    font-size: clamp(10px, 1.0vw, 11.5px);
+    color: var(--light);
+    padding: 3px 0;
+  }
+  .seg-item::before { content: '・ '; }
+
+  /* ── Closing message ─────────────────────── */
+  .closing {
+    border-top: 1px solid var(--divider);
+    padding: 10px 0;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Impact banner (slide 3) ─────────────── */
+  .impact-banner {
+    background: #2A0808;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    text-align: center;
+    padding: 14px 20px;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .impact-sub { font-size: clamp(11px, 1.1vw, 13px); color: var(--light); margin-bottom: 6px; }
+  .impact-main { font-size: clamp(17px, 2.0vw, 24px); font-weight: 900; color: var(--accent); }
+
+  /* ── Evidence columns (slide 3) ─────────── */
+  .evidence-cols { display: flex; gap: 12px; flex: 1; overflow: hidden; }
+  .ev-col {
+    flex: 1;
+    background: var(--card2);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .ev-head {
+    padding: 7px 12px;
+    font-size: clamp(10px, 1.05vw, 11.5px);
+    font-weight: 700;
+    background: var(--card);
+    border-bottom: 1px solid var(--divider);
+  }
+  .ev-body {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: clamp(10px, 1.0vw, 11.5px);
+    color: var(--light);
+    line-height: 1.8;
+  }
+  .ev-foot {
+    padding: 7px 12px;
+    font-size: clamp(10px, 1.0vw, 11px);
+    font-weight: 700;
+    background: #1A1A30;
+    border-left: 4px solid transparent;
+  }
+
+  /* ── Flow diagram (slide 3) ──────────────── */
+  .flow-diagram {
+    background: #18182C;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+  }
+  .flow-label { font-size: 9px; font-weight: 700; white-space: nowrap; }
+  .flow-boxes { display: flex; align-items: center; gap: 6px; flex: 1; }
+  .flow-box {
+    border: 1.5px solid;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: clamp(10px, 1.0vw, 11px);
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+  }
+  .flow-arrow { font-size: 14px; font-weight: 900; flex-shrink: 0; }
+  .vs-badge {
+    background: var(--accent);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 900;
+    padding: 6px 12px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── Navigation ──────────────────────────── */
+  #nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    background: #0A0A14;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    background: var(--card2);
+    border: 1px solid var(--divider);
+    color: var(--white);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, border-color .2s;
+  }
+  .nav-btn:hover { background: var(--accent); border-color: var(--accent); }
+  .nav-btn:disabled { opacity: .3; cursor: default; }
+  .nav-btn:disabled:hover { background: var(--card2); border-color: var(--divider); }
+  .nav-dots { display: flex; gap: 8px; }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--divider);
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .nav-dot.active { background: var(--accent); transform: scale(1.3); }
+  .nav-info { font-size: 11px; color: var(--muted); min-width: 50px; text-align: center; }
+
+  /* ── Keyboard hint ───────────────────────── */
+  #hint {
+    position: fixed;
+    bottom: 72px;
+    right: 20px;
+    font-size: 10px;
+    color: var(--muted);
+    opacity: .5;
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+  <!-- Progress -->
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+
+  <!-- Slides -->
+  <div id="slides-area">
+
+    <!-- ======================================
+         SLIDE 1：危機感
+    ======================================= -->
+    <div class="slide active" id="slide-0">
+      <div class="slide-header">
+        <div class="slide-num">01 / 04</div>
+        <div>
+          <div class="slide-title">毎月リセット。この営業、いつまで続けられるか。</div>
+        </div>
+      </div>
+      <div class="title-underline"></div>
+
+      <div class="slide-body">
+        <!-- 左カラム -->
+        <div class="col col-l">
+          <p class="fs-lg fw-bold" style="margin-bottom:8px;">正直に言う。</p>
+          <p class="fs-md t-light" style="line-height:1.85; margin-bottom:10px;">
+            今のBP事業部の売上は、<span class="t-orange fw-bold">「たまたま」</span>で成り立っている。<br>
+            大型案件が取れた月は達成。取れなかった月は未達。<br>
+            翌月の見込みは、月が変わるまでわからない。<br><br>
+            これは「営業している」のではなく、<br>
+            <span class="t-orange fw-bold">「注文を待っている」</span>だ。
+          </p>
+
+          <div class="num-cards">
+            <div class="num-card">
+              <div class="num-card-label">月次目標</div>
+              <div class="num-card-val">3,000万円</div>
+            </div>
+            <div class="num-card">
+              <div class="num-card-label">現状見込み</div>
+              <div class="num-card-val t-light">800〜900万円</div>
+            </div>
+            <div class="num-card danger">
+              <div class="num-card-label">毎月の不足</div>
+              <div class="num-card-val red">▲ 約2,000万円</div>
+              <div class="num-card-sub">どこからか来ることを祈っている</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右カラム -->
+        <div class="col col-r">
+          <p class="fs-lg fw-bold t-orange" style="margin-bottom:8px;">もっと深刻な事実がある。</p>
+          <p class="fs-md t-light" style="line-height:1.8; margin-bottom:10px;">
+            直近1年でアクティブな取引先は約 <span class="fw-bold t-white">290社</span>。<br>
+            過去10年、数百社の法人と関係を築いてきた。<br><br>
+            なのに——
+          </p>
+
+          <div class="q-block">▶ その会社が年間いくら発注しているか、把握できているか？</div>
+          <div class="q-block">▶ 他の部署に発注担当者がいないか、確認したことがあるか？</div>
+          <div class="q-block">▶ なぜ先月より注文が減ったのか、直接聞いたことがあるか？</div>
+
+          <p class="fs-lg fw-bold t-accent" style="margin-top:14px;">ほとんど、できていない。</p>
+        </div>
+      </div>
+
+      <div class="footer-banner">
+        このままでは売上は上がらない。チームも守れない。　営業チーム維持には月5,000万円規模の売上が必要だ。　今のやり方で、それが実現できるか——答えは全員わかっているはずだ。
+      </div>
+    </div>
+
+
+    <!-- ======================================
+         SLIDE 2：戦略転換
+    ======================================= -->
+    <div class="slide" id="slide-1">
+      <div class="slide-header">
+        <div class="slide-num">02 / 04</div>
+        <div>
+          <div class="slide-title">「注文を待つ営業」を終わりにする。</div>
+          <div class="slide-sub">新しい戦略は一言で言える。既存顧客を、会社ごと握る。——これが「アカウント営業」だ。</div>
+        </div>
+      </div>
+      <div class="title-underline"></div>
+
+      <div class="slide-body">
+        <!-- 左：Before/After -->
+        <div class="col col-l" style="gap:0;">
+          <p class="fs-sm t-muted fw-bold" style="margin-bottom:6px;">何が変わるのか</p>
+          <table class="ba-table">
+            <thead>
+              <tr>
+                <th>これまで</th>
+                <th class="arrow-col"></th>
+                <th>これから</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>担当者一人から注文をもらう</td>
+                <td class="arrow-col">→</td>
+                <td>会社全体の発注を継続的に取り続ける</td>
+              </tr>
+              <tr>
+                <td>単発スポットを積み上げる</td>
+                <td class="arrow-col">→</td>
+                <td>ストック型の安定売上を構築する</td>
+              </tr>
+              <tr>
+                <td>注文が来るのを待つ</td>
+                <td class="arrow-col">→</td>
+                <td>ニーズを掘り起こし、提案しにいく</td>
+              </tr>
+              <tr>
+                <td>案件単位で管理</td>
+                <td class="arrow-col">→</td>
+                <td>企業単位のアカウントで管理</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 右：セグメント別戦術 -->
+        <div class="col col-r">
+          <p class="fs-sm t-muted fw-bold" style="margin-bottom:8px;">顧客タイプ別のアプローチ</p>
+
+          <div class="seg-card accent-border card">
+            <div class="seg-header">
+              <span class="seg-tag" style="background:var(--accent); color:#fff;">集中型</span>
+              <span class="fs-sm t-light">特定の担当者1人に発注が集中している</span>
+            </div>
+            <div class="seg-goal t-accent">目指すゴール：年間発注を握るパートナー化</div>
+            <div class="seg-item">年間見積を提示し、定例会を設定する</div>
+            <div class="seg-item">付加価値提供で競合を排除する</div>
+            <div class="seg-item">キーパーソンとの関係を組織単位に広げる</div>
+          </div>
+
+          <div class="seg-card orange-border card">
+            <div class="seg-header">
+              <span class="seg-tag" style="background:var(--orange); color:#1a1a1a;">分散型</span>
+              <span class="fs-sm t-light">社内の多くの社員がバラバラに発注している</span>
+            </div>
+            <div class="seg-goal t-orange">目指すゴール：社内インフラ化（発注一本化）</div>
+            <div class="seg-item">利用状況をヒアリングし、課題を把握する</div>
+            <div class="seg-item">発注集約＋コスト削減の提案を持ち込む</div>
+            <div class="seg-item">利用ガイド作成など、社内展開を支援する</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="closing">
+        <p class="fs-md t-orange" style="margin-bottom:4px;">やることは決まった。対象リストも出す。スクリプトも作る。あとは動くだけだ。</p>
+        <p class="fs-md fw-bold">下期終了時に「あのとき変わってよかった」と言えるかどうかは、今週の行動で決まる。</p>
+      </div>
+    </div>
+
+
+    <!-- ======================================
+         SLIDE 3：現状分析
+    ======================================= -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="slide-num">03 / 04</div>
+        <div>
+          <div class="slide-title">営業は「売上を作っている」のか？　データで検証した。</div>
+          <div class="slide-sub" style="color:var(--muted); font-size:10px;">出典：Salesforce 活動ログ分析</div>
+        </div>
+      </div>
+      <div class="title-underline"></div>
+
+      <!-- 衝撃バナー -->
+      <div class="impact-banner">
+        <div class="impact-sub">「営業が売上を作っているのか」を確かめに行ったら、</div>
+        <div class="impact-main">「営業は、売上を処理していた」</div>
+      </div>
+
+      <!-- 3カラムEvidences -->
+      <div class="evidence-cols">
+        <div class="ev-col">
+          <div class="ev-head t-accent">① 初回活動の実態</div>
+          <div class="ev-body">
+            多くの初回活動が「Re:メール」<br>
+            （= 問い合わせへの返信）<br><br>
+            問い合わせが先にあり、<br>
+            営業はそれに対応している。
+          </div>
+          <div class="ev-foot t-accent" style="border-color:var(--accent);">営業起点ではなく受動対応</div>
+        </div>
+        <div class="ev-col">
+          <div class="ev-head t-orange">② 営業手法の分布</div>
+          <div class="ev-body">
+            活動の大半がメール対応。<br>
+            電話（コール）は極めて少ない。<br><br>
+            アウトバウンド営業は<br>
+            ほぼ行われていない。
+          </div>
+          <div class="ev-foot t-orange" style="border-color:var(--orange);">能動的な案件創出が弱い</div>
+        </div>
+        <div class="ev-col">
+          <div class="ev-head t-green">③ 売上の発生源</div>
+          <div class="ev-body">
+            活動ログなし（#N/A）の<br>
+            受注が一定数存在。<br><br>
+            Web自然流入・紹介経由の<br>
+            案件が相当数を占める。
+          </div>
+          <div class="ev-foot t-green" style="border-color:var(--green);">営業直接創出の売上は不明</div>
+        </div>
+      </div>
+
+      <!-- フロー図 -->
+      <div class="flow-diagram">
+        <div>
+          <div class="flow-label t-green" style="margin-bottom:4px;">想定（あるべき姿）</div>
+          <div class="flow-boxes">
+            <div class="flow-box" style="border-color:var(--green); color:var(--green); background:#1a3020;">営業アプローチ</div>
+            <div class="flow-arrow t-green">→</div>
+            <div class="flow-box" style="border-color:var(--green); color:var(--green); background:#1a3020;">案件創出</div>
+            <div class="flow-arrow t-green">→</div>
+            <div class="flow-box" style="border-color:var(--green); color:var(--green); background:#1a3020;">受注</div>
+          </div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div>
+          <div class="flow-label t-accent" style="margin-bottom:4px;">実態（現実）</div>
+          <div class="flow-boxes">
+            <div class="flow-box" style="border-color:var(--muted); color:var(--muted); background:#1e1e35;">問い合わせ発生</div>
+            <div class="flow-arrow t-orange">→</div>
+            <div class="flow-box" style="border-color:var(--orange); color:var(--orange); background:#2a2010;">営業が対応</div>
+            <div class="flow-arrow t-orange">→</div>
+            <div class="flow-box" style="border-color:var(--orange); color:var(--orange); background:#2a2010;">受注</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- フッター示唆 -->
+      <div class="footer-insight">
+        <span class="fw-bold t-accent" style="font-size:11px;">【示唆】　</span>
+        <span class="fs-sm t-light">現状の営業組織は「案件創出装置」ではなく「案件処理装置」として機能している。再現性ある売上拡大のためには、営業の役割を「対応」から「創出」へ再定義し、起点データの記録・KPIの再設計・アカウント営業への転換が不可欠だ。</span>
+      </div>
+    </div>
+
+    <!-- ======================================
+         SLIDE 4：即時施策（既存×集中型）
+    ======================================= -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="slide-num">04 / 04</div>
+        <div>
+          <div class="slide-title">まず動く。既存 × 集中型への即時アプローチ</div>
+          <div class="slide-sub">戦略を語る前に、今週から動ける施策を定義する。</div>
+        </div>
+      </div>
+      <div class="title-underline"></div>
+
+      <div class="slide-body" style="flex-direction:column; gap:12px; overflow:auto;">
+
+        <!-- ターゲット定義 -->
+        <div style="display:flex; align-items:center; gap:10px; background:#1E1E35; border:1px solid #444466; border-radius:8px; padding:10px 18px; flex-shrink:0;">
+          <span style="font-size:10px; font-weight:700; background:var(--accent); color:#fff; padding:3px 10px; border-radius:4px; white-space:nowrap;">対象</span>
+          <span style="font-size:13px; font-weight:700; color:var(--white);">既存顧客 &times; 集中型</span>
+          <span style="color:var(--divider); margin:0 4px;">|</span>
+          <span style="font-size:11.5px; color:var(--light);">過去1年以内に取引あり &times; 発注が特定の担当者1名に集中しているアカウント</span>
+          <div style="margin-left:auto; font-size:10px; color:var(--muted);">優先度：<span style="color:var(--accent); font-weight:700;">最高</span></div>
+        </div>
+
+        <!-- 3ゴールカード -->
+        <div style="display:flex; gap:14px; flex:1; min-height:0;">
+
+          <!-- Goal 1：ヒアリング -->
+          <div style="flex:1; background:#1A1A32; border:1.5px solid #444466; border-top:3px solid var(--accent); border-radius:8px; padding:16px 18px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="font-size:11px; font-weight:700; background:var(--accent); color:#fff; padding:2px 10px; border-radius:20px;">Goal 01</span>
+              <span style="font-size:15px; font-weight:900; color:var(--white);">ヒアリング</span>
+            </div>
+            <p style="font-size:12px; color:var(--orange); font-weight:700; margin-bottom:2px;">把握すべき情報を取りにいく</p>
+
+            <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+              <div style="background:#28284A; border-left:3px solid var(--accent); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">会社全体の発注規模</span><br>年間でどのくらいの弁当・ケータリング発注があるか
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--accent); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">発注の意思決定構造</span><br>自分以外に発注している人・部署はあるか
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--accent); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">不満・改善要望</span><br>現状の使い勝手で困っていることはないか
+              </div>
+            </div>
+
+            <div style="background:#2A0808; border:1px solid var(--accent); border-radius:6px; padding:8px 12px; margin-top:4px;">
+              <p style="font-size:10px; color:var(--muted); margin-bottom:3px;">トークの入り口</p>
+              <p style="font-size:11px; color:var(--light); line-height:1.7;">「いつもありがとうございます。最近ご利用の状況を改めて聞かせていただけますか？社内でお弁当を使われているのは○○さんだけでしょうか？」</p>
+            </div>
+          </div>
+
+          <!-- Goal 2：直近注文獲得 -->
+          <div style="flex:1; background:#1A1A32; border:1.5px solid #444466; border-top:3px solid var(--orange); border-radius:8px; padding:16px 18px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="font-size:11px; font-weight:700; background:var(--orange); color:#1a1a1a; padding:2px 10px; border-radius:20px;">Goal 02</span>
+              <span style="font-size:15px; font-weight:900; color:var(--white);">直近注文獲得</span>
+            </div>
+            <p style="font-size:12px; color:var(--orange); font-weight:700; margin-bottom:2px;">ヒアリングをしながら次の注文を確保する</p>
+
+            <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+              <div style="background:#28284A; border-left:3px solid var(--orange); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">直近の発注機会を聞く</span><br>「次のご利用の予定はありますか？会議・社内イベントなど」
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--orange); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">休眠顧客には理由を確認</span><br>「最近ご注文がないのですが、何かご不便な点がありましたか？」
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--orange); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">新メニュー・季節提案を持参</span><br>「今月のおすすめをご紹介したくてご連絡しました」
+              </div>
+            </div>
+
+            <div style="background:#2A1800; border:1px solid var(--orange); border-radius:6px; padding:8px 12px; margin-top:4px;">
+              <p style="font-size:10px; color:var(--muted); margin-bottom:3px;">ゴールの定義</p>
+              <p style="font-size:11px; color:var(--light); line-height:1.7;">このアプローチで<span style="color:var(--orange); font-weight:700;">1件以上の注文確約</span>を取ることを必達目標とする。手ぶらで終わらせない。</p>
+            </div>
+          </div>
+
+          <!-- Goal 3：他の注文者の紹介 -->
+          <div style="flex:1; background:#1A1A32; border:1.5px solid #444466; border-top:3px solid var(--green); border-radius:8px; padding:16px 18px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span style="font-size:11px; font-weight:700; background:var(--green); color:#1a1a1a; padding:2px 10px; border-radius:20px;">Goal 03</span>
+              <span style="font-size:15px; font-weight:900; color:var(--white);">他の注文者の紹介</span>
+            </div>
+            <p style="font-size:12px; color:var(--green); font-weight:700; margin-bottom:2px;">1社から複数の接点を作る</p>
+
+            <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+              <div style="background:#28284A; border-left:3px solid var(--green); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">他部署への紹介を依頼する</span><br>「他にお弁当を使われている部署の方をご紹介いただけますか？」
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--green); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">担当者から担当者へ</span><br>紹介してもらった人へ即日コンタクト。鮮度が命。
+              </div>
+              <div style="background:#28284A; border-left:3px solid var(--green); border-radius:4px; padding:7px 10px; font-size:11px; color:var(--light);">
+                <span style="color:var(--white); font-weight:700;">紹介のフックを用意する</span><br>「ご紹介いただければ初回は割引でご案内できます」
+              </div>
+            </div>
+
+            <div style="background:#0A2A1A; border:1px solid var(--green); border-radius:6px; padding:8px 12px; margin-top:4px;">
+              <p style="font-size:10px; color:var(--muted); margin-bottom:3px;">集中型→分散型へのブリッジ</p>
+              <p style="font-size:11px; color:var(--light); line-height:1.7;">紹介で接点が広がれば、<span style="color:var(--green); font-weight:700;">集中型アカウントが分散型へと進化</span>し、社内インフラ化への道が開ける。</p>
+            </div>
+          </div>
+
+        </div><!-- /3ゴールカード -->
+
+        <!-- 実施フロー -->
+        <div style="background:#18182C; border:1px solid #444466; border-radius:8px; padding:10px 18px; display:flex; align-items:center; gap:0; flex-shrink:0;">
+          <span style="font-size:9.5px; font-weight:700; color:var(--muted); white-space:nowrap; margin-right:16px;">実施の流れ</span>
+          <div style="display:flex; align-items:center; gap:0; flex:1; justify-content:space-between;">
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 1</div>
+              <div style="background:#28284A; border:1px solid var(--accent); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--accent);">対象リストを確認</div>
+            </div>
+            <div style="font-size:18px; color:var(--divider); padding:0 8px;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 2</div>
+              <div style="background:#28284A; border:1px solid var(--orange); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--orange);">コンタクト（メール/電話）</div>
+            </div>
+            <div style="font-size:18px; color:var(--divider); padding:0 8px;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 3</div>
+              <div style="background:#28284A; border:1px solid var(--orange); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--orange);">ヒアリング実施</div>
+            </div>
+            <div style="font-size:18px; color:var(--divider); padding:0 8px;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 4</div>
+              <div style="background:#28284A; border:1px solid var(--orange); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--orange);">注文確約を取る</div>
+            </div>
+            <div style="font-size:18px; color:var(--divider); padding:0 8px;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 5</div>
+              <div style="background:#28284A; border:1px solid var(--green); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--green);">他の注文者を紹介してもらう</div>
+            </div>
+            <div style="font-size:18px; color:var(--divider); padding:0 8px;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:10px; color:var(--muted); margin-bottom:2px;">STEP 6</div>
+              <div style="background:#28284A; border:1px solid var(--green); border-radius:6px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--green);">結果を記録・共有</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /slide-body -->
+    </div><!-- /slide-3 -->
+
+  </div><!-- /slides-area -->
+
+  <!-- Navigation -->
+  <div id="nav">
+    <button class="nav-btn" id="btn-prev" disabled>&#8592;</button>
+    <div class="nav-dots">
+      <div class="nav-dot active" data-idx="0"></div>
+      <div class="nav-dot" data-idx="1"></div>
+      <div class="nav-dot" data-idx="2"></div>
+      <div class="nav-dot" data-idx="3"></div>
+    </div>
+    <button class="nav-btn" id="btn-next">&#8594;</button>
+    <div class="nav-info" id="nav-info">1 / 4</div>
+  </div>
+</div>
+
+<div id="hint">← → キーでも操作できます</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.nav-dot');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const navInfo = document.getElementById('nav-info');
+  const fill    = document.getElementById('progress-fill');
+  let current = 0;
+  const total = slides.length;
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    setTimeout(() => slides[current].classList.remove('exit'), 500);
+
+    dots[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === total - 1;
+    navInfo.textContent = `${current + 1} / ${total}`;
+    fill.style.width = `${((current + 1) / total) * 100}%`;
+  }
+
+  btnPrev.addEventListener('click', () => current > 0 && goTo(current - 1));
+  btnNext.addEventListener('click', () => current < total - 1 && goTo(current + 1));
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.idx)));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  current < total-1 && goTo(current+1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    current > 0       && goTo(current-1);
+  });
+
+  // 初期プログレス
+  fill.style.width = `${(1/total)*100}%`;
+  // nav-info 初期値を total に合わせて更新
+  navInfo.textContent = `1 / ${total}`;
+</script>
+</body>
+</html>

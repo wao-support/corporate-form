@@ -46,7 +46,7 @@
       .info-table td { padding: 3px 8px; font-size: 8.5pt; }
       [contenteditable] { min-height: 1em; }
 
-      .plan-option { padding: 6px 10px; }
+      .plan-option { padding: 6px 8px; }
       .plan-option-name { font-size: 8.5pt; margin-bottom: 1px; }
       .plan-option-sub { font-size: 7.5pt; }
       .plan-period-row { padding: 5px 10px; font-size: 8.5pt; }
@@ -117,6 +117,12 @@
       margin-bottom: 8px;
     }
 
+    .section-title-note {
+      font-weight: 400;
+      letter-spacing: 0;
+      margin-left: 1em;
+    }
+
     /* 情報テーブル */
     .info-table {
       width: 100%;
@@ -177,7 +183,7 @@
     .plan-option {
       flex: 1;
       border-right: 1px solid #aaa;
-      padding: 10px 14px;
+      padding: 10px 10px;
       cursor: pointer;
       display: flex;
       align-items: flex-start;
@@ -203,6 +209,7 @@
       font-size: 9.5pt;
       font-weight: 700;
       margin-bottom: 2px;
+      white-space: nowrap;
     }
 
     .plan-option-sub {
@@ -458,6 +465,13 @@
     <div class="plan-select-box">
       <div class="plan-options">
         <label class="plan-option">
+          <input type="radio" name="plan" value="standard">
+          <div>
+            <div class="plan-option-name">スタンダード</div>
+            <div class="plan-option-sub">年間100万円未満</div>
+          </div>
+        </label>
+        <label class="plan-option">
           <input type="radio" name="plan" value="silver">
           <div>
             <div class="plan-option-name">ビジネスシルバー</div>
@@ -492,7 +506,7 @@
 
   <!-- ３．割引の受け取り方 -->
   <div class="section">
-    <div class="section-title">３．割引の受け取り方</div>
+    <div class="section-title">３．割引の受け取り方<span class="section-title-note">※ビジネスシルバー以上の方対象</span></div>
     <div class="discount-options">
       <label class="discount-option">
         <input type="radio" name="discount" value="immediate">
